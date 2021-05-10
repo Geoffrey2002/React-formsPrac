@@ -1,31 +1,52 @@
 import React, { useState } from "react";
 
 function App() {
-  const [name, setName] = useState("");
-  const [headingText, setHeading] = useState("");
+  const [contact, setContact] = useState({
+    fName: "",
+    lName: "",
+    email: ""
+  });
 
   function handleChange(event) {
-    console.log(event.target.value);
-    setName(event.target.value);
-  }
+    const { name, value } = event.target;
 
-  function handleClick(event) {
-    setHeading(name);
-
-    event.preventDefault();
+    setContact((prevValue) => {
+      if (name === "fName") {
+        return {
+          fName: value,
+          lName: prevValue.lName,
+          email: prevValue.email
+        };
+      } else if (name === "lName") {
+        return {
+          fName: prevValue.fName,
+          lName: value,
+          email: prevValue.email
+        };
+      } else if (name === "email") {
+        return {
+          fName: prevValue.fName,
+          lName: prevValue.lName,
+          email: value
+        };
+      }
+    });
   }
 
   return (
     <div className="container">
-      <h1>Hello {headingText}</h1>
-      <form onSubmit={handleClick}>
-        <input
-          onChange={handleChange}
-          type="text"
-          placeholder="What's your name?"
-          value={name}
-        />
-        <button type="submit">Submit</button>
+     
+      <form>
+        <input onChange={handleChange} name="fName" placeholder="First Name" />
+        <input onChange={handleChange} name="lName" placeholder="Last Name" />
+        <input onChange={handleChange} name="email" placeholder="Email" />
+
+        
+      <button type="submit">Submit</button>
+      <h1> Hello
+      {contact.fName} {contact.lName}{" "}
+      </h1>
+      <p>{contact.email}</p>
       </form>
     </div>
   );
